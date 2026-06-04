@@ -1,0 +1,20 @@
+{
+  "name": "luminix-frontend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "turbo run dev",
+    "build": "turbo run build",
+    "lint": "turbo run lint"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "packageManager": "pnpm@10.27.0",
+  "devDependencies": {
+    "prettier": "^3.8.3",
+    "prettier-plugin-svelte": "^4.1.0",
+    "turbo": "^2.9.16"
+  }
+}

@@ -1,0 +1,16 @@
+{
+    "$schema": "https://turbo.build/schema.json",
+    "globalEnv": ["NODE_ENV"],
+    "tasks": {
+        "build": {
+            "dependsOn": ["^build"],
+            "outputs": [".svelte-kit/**", "dist/**"],
+            "env": ["PUBLIC_API_URL", "PUBLIC_ACCOUNT_URL", "PUBLIC_STATS_URL", "PUBLIC_STUDIO_URL"]
+        },
+        "lint": {},
+        "dev": {
+            "cache": false,
+            "persistent": true
+        }
+    }
+}

@@ -1,0 +1,1 @@
+pnpm add @luminux/ui --workspace --filter dashboard
