@@ -1,23 +1,37 @@
-import IconLayoutDashboard from "@tabler/icons-svelte/icons/layout-dashboard";
-import IconLayersIntersect from "@tabler/icons-svelte/icons/layers-intersect";
-import IconChartBar from "@tabler/icons-svelte/icons/chart-bar";
+import IconApps from "@tabler/icons-svelte/icons/apps";
+import IconTag from "@tabler/icons-svelte/icons/tag";
+import IconGridDots from "@tabler/icons-svelte/icons/grid-dots";
+import { PUBLIC_STATS_URL, PUBLIC_STUDIO_URL } from "$env/static/public";
 
 export default [
     {
-        label: "Studio",
-        authenticated: true,
-        href: "/studio",
-        Icon: IconLayoutDashboard,
-        mobileHref: "/studio/overview",
+        label: "Platforms",
+        type: "dropdown",
+        Icon: IconApps,
+        items: [
+            {
+                title: "Streamer Studio",
+                href: PUBLIC_STUDIO_URL,
+                description: "Automated reactive overlays & alerts",
+            },
+            {
+                title: "Match Analytics",
+                href: PUBLIC_STATS_URL,
+                description: "Deep performance trends & match history",
+            },
+        ],
+        side: "left",
     },
     {
-        label: "Modules",
-        href: "/modules",
-        Icon: IconLayersIntersect,
+        label: "Games",
+        Icon: IconGridDots,
+        href: "/games",
+        side: "left",
     },
     {
         label: "Pricing",
+        Icon: IconTag,
         href: "/pricing",
-        Icon: IconChartBar,
+        side: "right",
     },
 ];
