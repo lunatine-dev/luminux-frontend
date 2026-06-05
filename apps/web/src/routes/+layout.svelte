@@ -20,20 +20,17 @@
 <ModeWatcher />
 
 <div
-    class="min-h-screen flex flex-col bg-background text-foreground transition-colors duration-300 selection:bg-primary selection:text-primary-foreground font-sans overflow-x-hidden"
+    class="min-h-screen flex flex-col bg-background text-foreground transition-colors duration-300 selection:bg-primary selection:text-primary-foreground font-sans"
 >
     <Navbar />
-    <div class="page-container flex-1 {page.status !== 200 ? 'flex flex-col flex-1' : ''}">
+
+    <main class="page-container flex-1">
         {#key page.url.pathname}
-            <div
-                in:fade={{ duration: 200, delay: 150 }}
-                out:fade={{ duration: 150 }}
-                class="page-wrapper {page.status !== 200 ? 'flex flex-col flex-1' : ''}"
-            >
+            <div in:fade={{ duration: 200, delay: 150 }} out:fade={{ duration: 150 }} class="page-wrapper">
                 {@render children()}
             </div>
         {/key}
-    </div>
+    </main>
 
     <Footer />
 </div>

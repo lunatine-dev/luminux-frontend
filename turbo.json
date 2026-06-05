@@ -4,7 +4,7 @@
     "tasks": {
         "build": {
             "dependsOn": ["^build"],
-            "outputs": [".svelte-kit/**", "dist/**"],
+            "outputs": [".svelte-kit/**", "dist/**", "wrangler.toml"],
             "env": ["PUBLIC_API_URL", "PUBLIC_ACCOUNT_URL", "PUBLIC_STATS_URL", "PUBLIC_STUDIO_URL"]
         },
         "lint": {},
