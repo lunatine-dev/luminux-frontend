@@ -21,6 +21,16 @@
 
     const isMobile = new IsMobile();
     const { user = null } = $props();
+
+    // Local state to manage sheet opening
+    let mobileMenuOpen = $state(false);
+
+    // Svelte 5 reactive effect: automatically close mobile drawer when route changes
+    $effect(() => {
+        if (page.url.pathname) {
+            mobileMenuOpen = false;
+        }
+    });
 </script>
 
 {#snippet ListItem({ title, content, href, class: className, ...restProps })}
@@ -51,7 +61,7 @@
 
 {#snippet RenderItems({ side = "right" })}
     <NavigationMenu.Root viewport={isMobile.current}>
-        <NavigationMenu.List class="flex-wrap gap-1">
+        <NavigationMenu.List class="flex-wrap gap-1 hidden lg:flex">
             {#each NavItems.filter((item) => item.side === side) as item}
                 {@const Icon = item.Icon}
 
@@ -121,7 +131,7 @@
                 >
                     <IconBolt class="size-6 text-primary-foreground stroke-2" />
                 </div>
-                <span class="text-2xl font-black uppercase tracking-tighter italic text-foreground hidden md:block">
+                <span class="text-2xl font-black uppercase tracking-tighter italic text-foreground">
                     {Brand.name}
                 </span>
             </a>
@@ -129,7 +139,7 @@
             {@render RenderItems({ side: "left" })}
         </div>
 
-        <div class="flex items-center gap-3">
+        <div class="hidden lg:flex items-center gap-3">
             {@render RenderItems({ side: "right" })}
 
             <div class="h-5 w-px bg-border/60 mx-1 hidden sm:block"></div>
@@ -164,6 +174,116 @@
                 />
                 <span class="sr-only">Toggle theme</span>
             </Button>
+        </div>
+
+        <div class="flex lg:hidden">
+            <Sheet.Root bind:open={mobileMenuOpen}>
+                <Sheet.Trigger class="p-2 -mr-2 rounded-md hover:bg-muted transition-colors">
+                    <IconMenu2 class="size-6" />
+                </Sheet.Trigger>
+                <Sheet.Content
+                    side="top"
+                    class="w-full h-auto max-h-[92vh] px-0 bg-background border-b shadow-2xl flex flex-col rounded-b-3xl"
+                >
+                    <Sheet.Header class="px-6 border-b pb-4">
+                        <Sheet.Title class="text-left font-bold text-xl tracking-tight">
+                            {Brand.name}
+                        </Sheet.Title>
+                    </Sheet.Header>
+
+                    <nav class="overflow-y-auto px-6 py-6 space-y-6">
+                        {#each NavItems as item}
+                            {@const IconComponent = item.Icon}
+
+                            {#if item.type === "dropdown"}
+                                <div class="space-y-3">
+                                    <div
+                                        class="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-muted-foreground/70"
+                                    >
+                                        {#if IconComponent}
+                                            <IconComponent class="w-4 h-4" />
+                                        {/if}
+                                        <span>{item.label}</span>
+                                    </div>
+
+                                    <div class="grid grid-cols-1 gap-2">
+                                        {#each item.items as subItem}
+                                            <a
+                                                href={subItem.href}
+                                                class="p-4 rounded-xl border border-border/60 bg-card/40 hover:bg-accent group transition-all duration-150 active:scale-[0.99]"
+                                            >
+                                                <div class="font-bold text-sm text-foreground transition-colors">
+                                                    {subItem.title}
+                                                </div>
+                                                {#if subItem.description}
+                                                    <p class="text-xs text-muted-foreground mt-0.5 line-clamp-1">
+                                                        {subItem.description}
+                                                    </p>
+                                                {/if}
+                                            </a>
+                                        {/each}
+                                    </div>
+                                </div>
+                            {:else}
+                                {#if item.label === "Games"}
+                                    <div class="grid grid-cols-2 gap-3 mt-2">
+                                        {#each NavItems.filter((i) => i.type !== "dropdown") as singleItem}
+                                            {@const SingleIcon = singleItem.Icon}
+                                            <a
+                                                href={singleItem.href}
+                                                class="flex flex-col gap-2 p-4 rounded-xl border border-border/60 bg-card/30 hover:bg-accent hover:text-accent-foreground transition-all duration-150 text-left active:scale-[0.98]"
+                                            >
+                                                {#if SingleIcon}
+                                                    <SingleIcon class="w-5 h-5 text-muted-foreground" />
+                                                {/if}
+                                                <span class="text-xs font-bold uppercase tracking-wider"
+                                                    >{singleItem.label}</span
+                                                >
+                                            </a>
+                                        {/each}
+                                    </div>
+                                {/if}
+                            {/if}
+                        {/each}
+
+                        <div class="border-t border-border/60 pt-5 flex items-center justify-between gap-4">
+                            <Button
+                                class="rounded-xl flex-1 font-black shadow-lg shadow-primary/10 tracking-wide uppercase text-xs h-11"
+                                href="/signup"
+                            >
+                                Get Started
+                            </Button>
+
+                            <div class="flex items-center gap-1">
+                                <Button
+                                    variant="ghost"
+                                    size="icon"
+                                    class="rounded-full text-muted-foreground h-11 w-11"
+                                    href="https://discord.luminux.app"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                >
+                                    <IconBrandDiscord class="size-5" />
+                                </Button>
+
+                                <Button
+                                    onclick={toggleMode}
+                                    variant="ghost"
+                                    size="icon"
+                                    class="rounded-full text-muted-foreground h-11 w-11 relative"
+                                >
+                                    <IconSun
+                                        class="h-[1.2rem] w-[1.2rem] scale-100 rotate-0 transition-all dark:scale-0 dark:-rotate-90"
+                                    />
+                                    <IconMoon
+                                        class="absolute h-[1.2rem] w-[1.2rem] scale-0 rotate-90 transition-all dark:scale-100 dark:rotate-0"
+                                    />
+                                </Button>
+                            </div>
+                        </div>
+                    </nav>
+                </Sheet.Content>
+            </Sheet.Root>
         </div>
     </div>
 </div>
